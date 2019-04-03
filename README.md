@@ -1,8 +1,8 @@
 # D3 Tutorial
 
-This is a short tutorial introducing the basic elements and concepts of D3. D3 stands for Data-Driven Documents and is a very popular JavaScript library written by [Mike Bostock](https://bost.ocks.org/mike/).
+This is a short tutorial introducing the basic elements and concepts of D3. D3 stands for Data-Driven Documents and is a very popular JavaScript library written by [Mike Bostock](http://bost.ocks.org/mike/).
 
-Homepage: https://d3js.org/
+Homepage: http://d3js.org/
 
 Github: https://github.com/d3/d3
 
@@ -16,12 +16,12 @@ License: BSD-3-Clause license
 
 Download / Include:
 
--	`<script src="https://d3js.org/d3.v5.min.js"></script>`
--	https://github.com/d3/d3/releases/latest
+- `<script src="http://d3js.org/d3.v5.js" charset="utf-8"></script>`
+- https://github.com/d3/d3/releases/latest
 
 ## Credits
 
-This tutorial is based on the work of [Samuel Gratzl](https://github.com/sgratzl/d3tutorial) and [Alexander Lex](http://dataviscourse.net/2016/tutorials/).
+This tutorial is based on the work of [Samuel Gratzl](https://github.com/sgratzl/d3tutorial), [Holger Stitz](https://github.com/thinkh/d3tutorial) and [Alexander Lex](http://dataviscourse.net/2016/tutorials/).
 
 ---
 
@@ -32,14 +32,23 @@ This tutorial is based on the work of [Samuel Gratzl](https://github.com/sgratzl
 -	[CSS - Cascading Style Sheets](#css)
 -	[SVG - Scalable Vector Graphics](#svg)
 -	[JS - JavaScript / JSON (JavaScript Object Notation)](#js)
+
+Part 1: Student's First Barchart
 -	[D3 - Data-Driven Documents](#d3)
-    - [Simple Selections and Manipulations](#d3-selections)
-    - [Data Join: Enter / Update / Exit](#d3-data-join)
-    - [Data Loading: d3.json, d3.csv](#d3-data-loading)
-    - [Scales and Axes](#d3-scales-axes)
-    - [Interactivity](#d3-interactivity)
-    - [Transitions](#d3-transitions)
+- [Simple Selections and Manipulations](#d3-selections)
+- [Data Join: Enter / Update / Exit](#d3-data-join)
+- [Data Loading: d3.json, d3.csv](#d3-data-loading)
+- [Scales and Axes](#d3-scales-axes)
+- [Interactivity](#d3-interactivity)
+- [Transitions](#d3-transitions)
+
+Part 2: Student's First Multiple Coordinated View
+- [Code Structure](#code-structure)
 -	[D3 Layouts](#layouts)
+- [Interactivity 2](#interaction2)
+- [Reuseability](#reuse)
+- [Transitions 2](#transitions2)
+
 -	[More D3](#more-d3)
 -	[D3 Boilerplate](#boilerplate)
 -	[What Else Besides D3](#beside-d3)
@@ -51,11 +60,7 @@ This tutorial is based on the work of [Samuel Gratzl](https://github.com/sgratzl
 <a id="dev-environment"></a>
 # Development Environment
 
-Using a good development environment can save you time and prevent you from pain.
-
-## Editors
-
-The editor is one of the tools that will you use most. Choose the editor you feel comfortable with and that supports your work. A good start are editors like [Visual Studio Code](https://code.visualstudio.com), [Sublime](https://www.sublimetext.com/), or [Atom](https://atom.io). Fully fledged integrated development environments such as [WebStorm](https://www.jetbrains.com/webstorm/) or [Eclipse](http://www.eclipse.org/webtools/) may be complex at a first glance but provide a bunch of useful features.
+Using a good development environment can save you time and prevent you from pain. Editors like [Visual Studio Code](https://code.visualstudio.com), [Sublime](http://www.sublimetext.com/), or [Atom](https://atom.io) are a good start. Fully fledged integrated development environments such as [WebStorm](https://www.jetbrains.com/webstorm/) or [Eclipse](http://www.eclipse.org/webtools/) may be complex at a first glance but provide a bunch of useful features.
 
 ## Chrome Developer Tools
 
@@ -77,11 +82,11 @@ Among other you have:
 -	Profiler profile your JS code for bottlenecks
 -	Network look at all the requests/responses of your website
 
-Every major web browser ([Firefox](https://developer.mozilla.org/en-US/docs/Tools/), [Safari](https://developer.apple.com/safari/tools/), [Edge](https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide), etc.) has integrated developer tools.
+Every major web browser (Firefox, Safari, Edge, Internet Explorer, etc.) has integrated developer tools.
 
 ## Local WebServer
 
-While you can view local sites (`file:///`), Chrome doesn't allow you to load additional external files, e.g., JSON files, for security reasons. Therefore, you need a local webserver running for development. As alternative you can use an integrated IDE (such as [WebStorm](https://www.jetbrains.com/webstorm/)\) that has a webserver already integrated.
+While you can view local sites (`file:///`), Chrome doesn't allow you to load additional external files, e.g., JSON files, for security reasons. Therefore, you need a local webserver running for development. As alternative you can use an integrated IDE (such as [WebStorm](https://www.jetbrains.com/webstorm/)) that has a webserver already integrated.
 
 Starting a simple Python static webserver:
 
@@ -89,7 +94,7 @@ Starting a simple Python static webserver:
 python -m SimpleHTTPServer
 ```
 
-Full list of webserver: https://gist.github.com/willurd/5720255
+Full list: https://gist.github.com/willurd/5720255
 
 
 ## Git (Version Control)
@@ -315,11 +320,11 @@ It is a dynamically typed language, which can be strange for developers who main
 
 ```js
 // variables
-let x = 5;
-let s = "abc";
-let s2 = 'abc';
-let arr = [1,2,4];
-let obj = { a : 10, b : 'test'};
+const x = 5;
+const s = "abc";
+const s2 = 'abc';
+const arr = [1,2,4];
+const obj = { a : 10, b : 'test'};
 // access: obj.a or obj['a']
 
 // conditionals
@@ -330,14 +335,14 @@ if (x < 10) {
 }
 
 // ternary operator
-let x2 = x < 10 ? 20 : 30;
+const x2 = x < 10 ? 20 : 30;
 
 // loops
 for(let i = 0; i < arr.length; i++) {
   x += arr[i];
 }
 // for of
-for(let ai of arr) {
+for(const ai of arr) {
   x += ai;
 }
 
@@ -350,15 +355,15 @@ while(i < 10) {
 function add(a,b) {
   return a + b;
 }
-let sub = (a,b) => {
+const sub = (a,b) => {
   return a - b;
 }
 console.log(add(10,30), sub(10,5));
 
 // functional style programming
 arr.forEach((d) => x += d);
-let arr2 = arr.map((d)  => d* 10);
-let arrf = arr.filter((d) => d < 3);
+const arr2 = arr.map((d)  => d* 10);
+const arrf = arr.filter((d) => d < 3);
 // function are first-level objects
 function compute(f, a, b) {
   return f(a,b);
@@ -459,7 +464,7 @@ requestFile();
 ----
 
 <a id="d3"></a>
-# Dive into D3
+# Part 1: Dive into D3 aka. Student's First Barchart
 
 A fundamental concept in D3 is binding a DOM element to a data item and manipulate the attributes according to the bound data item. For example, you have a list of persons each having two numerical attributes (age, weight) and a categorical one (gender). You bind each person to an SVG circle element and set the circle's x-position according to the age and the y-position according to the weight. If you additionally fill the circle according to the person's gender, you end up with a simple colored scatterplot visualization.
 
@@ -472,13 +477,13 @@ All functions of D3 are available under the namespace: `d3`. The most important 
 
 
 ```js
-let header = d3.select('div.header');
+const header = d3.select('div.header');
 ```
 
 Selectors provides a couple of function for manipulating the DOM element including: `attr`, `style`, `classed`, `text`, and `html`.
 
 ```js
-let circle = d3.select('circle');
+const circle = d3.select('circle');
 circle.attr('r', 10);
 circle.attr('cx', 20);
 circle.attr('cy', 23);
@@ -507,7 +512,7 @@ The function come in different shapes: as setter (previous examples) as in a get
 The DOM elements can be manipulated using. `append` and `remove`
 
 ```js
-let body = d3.select('body');
+const body = d3.select('body');
 body.append('svg').attr('width', 800).attr('height',600);
 
 d3.select('svg').remove();
@@ -521,6 +526,8 @@ The basic idea of D3 is binding data items to DOM elements and manipulate them a
 
 ![D3 Data Join Set Relationship](i/join.png)
 
+![D3 Data Join Set Relationship](i/join_types.png)
+
 For each of the cases we have to tell D3 what to do. e.g. when we have more data items than DOM elements, we are in the *enter* phase and need to specify a way how to create the remaining ones. Similarly if we more DOM elements than data items we are in the *exit* phase and need to take care of removing the superfluous ones.
 
 Basic workflow:
@@ -532,7 +539,7 @@ HTML boilerplate
 ```
 
 ```js
-const data = [1,2,3];
+const data = [1, 2, 3];
 // select svg element
 // select all circles - even if there none yet - and bind the data array `data` onto them
 let circles = d3.select('svg').selectAll('circle').data(data);
@@ -550,8 +557,8 @@ let circles_update_and_enter = circles_update.merge(circles_enter);
 // 1. argument (common name: d): the current data item
 // 2. argument (common name: i): the index of the data item in the data array
 // this context: the current DOM element
-circles_update_and_enter.attr('cx', (d,i) => d*10);
-circles_update_and_enter.attr('cy', (d,i) => i*50);
+circles_update_and_enter.attr('cx', (d, i) => d * 10);
+circles_update_and_enter.attr('cy', (d, i) => i * 50);
 
 // exit phase
 let circles_exit = circles.exit();
@@ -562,15 +569,15 @@ circles_exit.remove();
 Common shortcut:
 
 ```js
-const data = [1,2,3];
+const data = [1, 2, 3];
 let circles = d3.select('svg').selectAll('circle').data(data);
 
 let circles_enter = circles.enter().append('circle')
   .attr('r', 10);
 
 circles.merge(circles_enter)
-  .attr('cx', (d,i) => d*10)
-  .attr('cy', (d,i) => i*50);
+  .attr('cx', (d, i) => d * 10)
+  .attr('cy', (d, i) => i * 50);
 
 circles.exit().remove();
 ```
@@ -579,15 +586,15 @@ circles.exit().remove();
 **Hint**: Common pitfall
 
 ```js
-let data = [1,2,3];
+const data = [1, 2, 3];
 let circles = d3.select('svg').selectAll('circle').data(data)
   .enter().append('circle')
   .attr('r', 10);
 
 // what is the difference to the previous one?
 circles
-  .attr('cx', (d,i) => d*10)
-  .attr('cy', (d,i) => i*50);
+  .attr('cx', (d, i) => d * 10)
+  .attr('cy', (d, i) => i * 50);
 
 // exit is not defined?
 circles.exit().remove();
@@ -611,11 +618,11 @@ Nested data join ([Open in CodePen](https://codepen.io/thinkh/pen/QpPaXx)):
 
 ```js
 // hierarchical data
-const data = [{ name: 'a', arr: [1,2,3]}, { name: 'b', arr: [3,2,4] }];
+const data = [{ name: 'a', arr: [1, 2, 3]}, { name: 'b', arr: [3, 2, 4] }];
 
 let groups = d3.select('svg').selectAll('g').data(data);
 
-let groups_enter = groups.enter().append('g')
+let groups_enter = groups.enter().append('g');
 
 let groups_update = groups.merge(groups_enter)
   .attr('transform', (d, i) => `translate(${i * 20 + 10},10)`);
@@ -627,8 +634,8 @@ let circles = groups_update.selectAll('circle').data((d) => d.arr);
 let circles_update = circles.enter().append('circle');
 
 circles.merge(circles_update)
-  .attr('r', (d) => d*2)
-  .attr('cy',(d,i) => i*20);
+  .attr('r', (d) => d * 2)
+  .attr('cy',(d, i) => i * 20);
 
 circles.exit().remove();
 
@@ -638,7 +645,7 @@ groups.exit().remove();
 Nested selection ([Open in CodePen](https://codepen.io/thinkh/pen/vxMpqy)):
 
 ```js
-const data = [1,2,3];
+const data = [1, 2, 3];
 let circles = d3.select('svg').selectAll('circle').data(data);
 
 let circles_enter = circles.enter().append('circle')
@@ -646,8 +653,8 @@ let circles_enter = circles.enter().append('circle')
 circles_enter.append('title');
 
 let circles_update = circles.merge(circles_enter)
-  .attr('cx', (d,i) => d*10)
-  .attr('cy', (d,i) => i*50);
+  .attr('cx', (d, i) => d * 10)
+  .attr('cy', (d, i) => i * 50);
 
 circles_update.select('title').text((d) => d);
 
@@ -711,25 +718,34 @@ Loading [weather.json](examples/weather.json): [barchart03_json.html](examples/b
 
 As seen in the barchart example, mapping a value to a pixel value manually is a pain. D3 provides scales for this case. The idea is creating a mapping function between the *domain* values (data space) and the output *range* (pixel space).
 
-[![D3 scales](https://web.archive.org/web/20170715154512im_/http://i0.wp.com/www.jeromecukier.net/wp-content/uploads/2011/08/d3scalePower.png)](https://web.archive.org/web/20170605012126/http://jeromecukier.net/blog/2011/08/11/d3-scales-and-color/)
+![D3 scales](./i/scale.png)
 
 D3 provides different scales:
 
 -	quantitative
 	-	`d3.scaleLinear()` ... linear mapping between domain and range
 	-	`d3.scalePow()`
+	-	`d3.scaleSqrt()`
 	-	`d3.scaleLog()`
+	-	`d3.scaleTime()`
 -	ordinal
 	-	`d3.scaleOrdinal()`
   - `d3.scaleBand()`
   - `d3.scalePoint()`
--	predefined [categorical color scales](https://github.com/d3/d3-scale-chromatic):
-	-	`d3.scaleOrdinal(d3.schemeCategory10)`
-	-	`d3.scaleOrdinal(d3.schemePaired)` ... special property: dark/bright pairs
+- more specialized ones see https://github.com/d3/d3-scale
+
+### Colors
+
+With version 5 D3 extracted the color schemes to it on repository located at 
+https://github.com/d3/d3-scale-chromatic. Including both D3 standard schemes (e.g. `d3.schemeCategory10`) but also the ones from [ColorBrewer](http://colorbrewer2.org/) (e.g. `d3.schemeSet3`). These can be used as `range` for an ordinal scale.  
 
 ```js
-const scale = d3.scaleLinear().domain([0,5]).range([0,200]);
-const cscale = d3.scaleLinear().domain([0,5]).range(['black','white']);
+const cscale = d3.scaleOrdinal().domain(['a', 'b', 'c']).range(d3.schemeCategory10);
+```
+	
+```js
+const scale = d3.scaleLinear().domain([0, 5]).range([0, 200]);
+const cscale = d3.scaleLinear().domain([0, 5]).range(['black', 'white']);
 
 ...
 // the scale can be applied as a function
@@ -740,19 +756,21 @@ circles_update
 
 ```js
 // domain is a list of strings or numbers
-const scale = d3.scaleOrdinal().domain(['a','b','c']).range([10,20,30]);
+const scale = d3.scaleOrdinal().domain(['a', 'b', 'c']).range([10, 20, 30]);
 // distribute as a band for each item
-const bscale = d3.scaleBand().domain(['a','b','c']).range([0,200]);
+const bscale = d3.scaleBand().domain(['a', 'b', 'c']).range([0, 200]);
 
 ...
 // the scale can be applied as a function
 circles.attr('cx', (d) => scale(d));
+
+// hint: bscale.bandwidth() returns the width of a band
 ```
 
-In addition, it is quite common adding a axis for your charts. D3 provides a utility function for this case : `d3.svg.axis()`. It uses a scale as input and the necessary SVG elements for you.
+In addition, it is quite common adding a axis for your charts. D3 provides a utility function for this case : `d3.axisBottom()`, `d3.axisLeft()`, `d3.axisRight()`, `d3.axisTop()`. It uses a scale as input and the necessary SVG elements for you.
 
 ```js
-const scale = d3.scaleLinear().domain([0,5]).range([0,200]);
+const scale = d3.scaleLinear().domain([0, 5]).range([0, 200]);
 
 const axis = d3.axisBottom().scale(scale);
 
@@ -781,13 +799,13 @@ Adding linear and ordinal scale: [barchart04_scale.html](examples/barchart04_sca
 Interactivity is event-driven as in the usual DOM. However, you have easy access to the currently bound data-item. The raw DOM event is hidden but can be accessed using `d3.event`. This is useful for stopping the event propagation (bubbling) `d3.event.stopPropagation()` or preventing the default behavior `d3.event.preventDefault()`. Moreover, the current context of the function `this` is the current DOM element.
 
 ```js
-const data = [1,2,3];
+const data = [1, 2, 3];
 let circles = d3.select('svg').selectAll('circle').data(data);
 
 circles.enter().append('circle')
   .attr('r', 10)
   .attr('cy', 40)
-  .attr('cx', (d,i) => 30+i*30)
+  .attr('cx', (d, i) => 30 + i * 30)
   .on('click', function(d, i) {
     console.log(`clicked on: ${d} (${i})`);
     const circle = d3.select(this); // can't use arrow scoping
@@ -812,7 +830,7 @@ Filter US cities: [barchart05_interactive.html](examples/barchart05_interactive.
 Animated transitions can help the user understanding changes and are just fun to watch. Transitions in D3 are very simple. Just add `.transition()` within a selector and the changes afterwards are done in an animated fashion. D3 is very smart when it comes to interpolating values, colors, and much more. Transitions can be used during all phases: enter, update, and exit. By nesting transitions you can create fancy animations with just a bunch line of code.
 
 ```js
-const data = [1,2,3];
+const data = [1, 2, 3];
 let circles = d3.select('svg').selectAll('circle').data(data);
 
 let circles_enter = circles.enter().append('circle')
@@ -824,8 +842,8 @@ circles.merge(circles_enter)
   .transition()
   .duration(1000) // duration of the animation
   .delay(200) // delay animation start
-  .attr('cx', (d,i) => d*50)
-  .attr('cy', (d,i) => 40+i*100)
+  .attr('cx', (d, i) => d * 50)
+  .attr('cy', (d, i) => 40 + i *100)
     .transition() // start another transition after the first one ended
     .attr('r', 20);
 
@@ -836,8 +854,8 @@ circles.exit().remove();
 D3 is rather dumb when it comes to mapping data items to DOM elements. It doesn't take the order into account. So, if element 'a' was previously at the first position and now on the third it will bind it to the third element. However, this hampers animations, i.e. animated sorting. By using the *key* argument of the `data` function, one can force that the same DOM element is bound to the same data item regardless of the item order.
 
 ```js
-const cscale = d3.scaleOrdinal(d3.schemeCategory10).domain(['a','b','c', 'd']);
-const xscale = d3.scaleBand().domain(['a','b','c', 'd']).range([10,200]);
+const cscale = d3.scaleOrdinal(d3.schemeCategory10).domain(['a', 'b', 'c', 'd']);
+const xscale = d3.scaleBand().domain(['a', 'b', 'c', 'd']).range([10,200]);
 
 function update(data) {
   let s = d3.select('svg');
@@ -852,17 +870,17 @@ function update(data) {
 
   circles.merge(circles_enter)
     .transition()
-    .attr('cy', (d,i) => 10+i*20)
+    .attr('cy', (d, i) => 10 + i * 20)
 
   circles.exit().remove();
 }
 
-let data = ['a','b','c'];
+let data = ['a', 'b', 'c'];
 update(data);
 
 // later on... 2secs
 setTimeout(() => {
-  data = ['c','a','d'];
+  data = ['c', 'a', 'd'];
   // the items will move to their new position,
   // and the DOM element for 'b' will be removed
   // and another one for 'd' created
@@ -887,36 +905,100 @@ Final results [barchart07_final.html](examples/barchart07_final.html) ([Open in 
 
 ---
 
+<a id="part2"></a>
+# Part 2: Student's First Multiple Coordinated View
+
+<a id="code-structure"></a>
+## Code Structure
+
+One interactive visualization is nice multiple coordinated ones are better. Combined with filtering and linking and brushing it enables explore datasets in way more detail and discover new insights. Before creating a multiple coordinated view setup a proper code structure helps. A possible way to structure ones code is
+
+```js
+
+const state = {
+  data: [],
+  // e.g. user selection
+}
+
+function filterData() {
+  // filter the raw data according to user selection 
+}
+
+function wrangleData(filtered) {
+  // wrangles the given filtered data to the format required by the visualizations
+}
+
+function createVis() {
+  // initialized for creating the visualizations, e.g. setup SVG, init scales, ...
+
+  function update(new_data) {
+    // updates the specific visualization with the given data 
+  }
+
+  // return the update function to be called
+  return update;
+}
+
+// create a specific instance
+const vis = createVis();
+
+function updateApp() {
+  // updates the application
+
+  const filtered = filterData();
+  const new_data = wrangleData(filtered);
+
+  // update visualization
+  vis(new_data);
+}
+
+// init interaction, e.g. listen to click events
+d3.select(...).on('click', () => {
+  // update state
+  updateApp();
+})
+
+d3.json(...).then((data) => {
+  // load data, e.g. via d3.json and update app afterwards
+  state.data = data;
+  updateApp();
+});
+
+```
+
+Besides this functional approach an object oriented way is an valid alternative. 
+
+---
+
+**INTERACTIVE**
+
+MCV Inital Setup: [mcv01_initial.html](examples/mcv01_initial.html) ([Open in Codepen](https://codepen.io/sgratzl/pen/bQzNBO))
+
+---
+
+
 <a id="layouts"></a>
-# Layouts
+## Layouts
 
 D3 provides a bunch of standard layouts. A layout does not actually render the visualization but prepares your data, such that you can render, e.g. a pie chart. Most of the time the work with helper tools for SVG from D3. e.g. the `d3.pie()` works best with `d3.arc()`.
 
-## Basic Setup
-
-![General Setup](i/CS171_Erklaerbaer_01_General.png)
-
-example including a feedback loop:
-
-![Interactive Setup](i/CS171_Erklaerbaer_02_HW1.png)
-
-example including a layout simulation:
-
-![Simulation Setup](i/CS171_Erklaerbaer_03_HW2.png)
-
-## Pie Layout
+### Pie Layout
 
 A pie-layout is a simple layout algorithm. It takes the data and a way to sort/compute the value per slice. It wraps the data and enhance it with additional attributes for the pie slice, such as start end end angle. *Hint* the angles and arcs are computed relatively to the pie's center. The computed attributes with another utility function `d3.arc()` which converts the given values to a SVG path.
 
----
-
-SEE: [pie.html](examples/pie.html) ([Open in CodePen](https://codepen.io/thinkh/pen/JWVpEX))
+![D3 Pie Layout](./i/pie.png)
 
 ---
 
-## Force Layout
+SEE: [pie.html](examples/pie.html) ([Open in Codepen](https://codepen.io/sgratzl/pen/rYPzYP))
+
+---
+
+### Force Layout
 
 A force layout is a graph layout algorithm, which uses a simulation for positioning nodes. The goal is to minimize the force applied on the system introduced by gravity, node repulsive force, and edge attraction forces. In this case it is not a one layout step, but a continuous one, where on each `tick` a new set of positions are available.
+
+![D3 Pie Layout](./i/force.png)
 
 ---
 
@@ -924,16 +1006,82 @@ SEE: [miserables.html](examples/miserables.html) ([Open in CodePen](https://code
 
 ---
 
+**INTERACTIVE**
+
+Pie chart layout: [mcv02_piechart.html](examples/mcv02_piechart.html) ([Open in Codepen](https://codepen.io/sgratzl/pen/bQzNBO))
+
+---
+
+<a id="interaction2"></a>
+## Interaction And Filtering
+
+So far the visualizations doesn't influence each other and the user can only filter data using form elements (drop downs, checkboxes). More intuitive is to interact with the visualization directly, e.g. by clicking on a bar to select this bar and filter all other visualizations to this selected subset. 
+
+---
+
+**INTERACTIVE**
+
+Interactive Visualizations: [mcv03_interaction.html](examples/mcv03_interaction.html) ([Open in Codepen](https://codepen.io/sgratzl/pen/BGMyWq))
+
+---
+
+<a id="reuse"></a>
+## Reuseability 
+
+An advantage of our code structure is that we can use the factory methods to create multiple instances of the same visualization kind showing different aspect of the data. This is a simple yet effective way to improve the overall multiple coordinated setup. 
+
+---
+
+**INTERACTIVE**
+
+Reuse Visualizations: [mcv04_morevisses.html](examples/mcv04_morevisses.html) ([Open in Codepen](https://codepen.io/sgratzl/pen/VVgYqx))
+
+---
+
+<a id="transition2"></a>
+## Advanced Transitions
+
+In addition to the simple `.transition()` D3 provides a more fine granular way to define and transition elements. 
+
+ - `.duration()` to define the duration of the animation. 
+ - `.delay()` to delay the animation. 
+ - `.ease()` to define the way how the interpolation should be performed, e.g. linear with ease in/out, ... 
+
+Each variant allows like most D3 data bound functions either a constant as an argument (`.duration(2000)`) or a function that returns the value for the given data element  (`.duration((d, i) => i * 1000)`). By naming a transition `.transition(name)` multiple transitions of different bindings can be synchronized. `.interrupt()` can be used to abort a currently running animation. For more information see [D3-Transition](https://github.com/d3/d3-transition/)
+
+The biggest flexibility is to specify how attributes or styles should be tweened using interpolators [D3 Interpolator](https://github.com/d3/d3-interpolate). For example instead of `.attr('width', (d) => d * 10)`, one can use the `.attrTween('width', (d) => d3.interpolateNumber(0, d * 10))` to create a function that take a number of the range [0..1] (t) as argument and returns the interpolated value. This can become handy in cases in which the simple interpolation doesn't work anymore, such as when interpolating the `d` attribute of paths. 
+
+---
+
+**INTERACTIVE**
+
+Custom Transition: [mcv05_transitions.html](examples/mcv05_transitions.html) ([Open in Codepen](https://codepen.io/sgratzl/pen/PxVwKd))
+
+---
+
+
+---
+
+**INTERACTIVE**
+
+Final Outcome: [mcv06_final.html](examples/mcv06_final.html) ([Open in Codepen](https://codepen.io/sgratzl/pen/yQZyzL))
+
+---
+
+
+
 <a id="more-d3"></a>
 # More D3
 
--	Geo Projection: GeoJSON, TopoJSON, Projection: https://github.com/d3/d3-geo
--	Time: Scales, Formatting/Parsing, ...
--	Behaviors:
-	-	Zoom
-	-	Drag
--	Array Utilities: `d3.sum`, `d3.max`, `d3.set`, `d3.map`
--	Selector Utilities: `.sort()`, `.filter()`, `.raise()`, `.lower()`
+D3 provides way more that has not been covered in this tutorial including:
+
+- Geo Projection: GeoJSON, TopoJSON, Projection: https://github.com/mbostock/d3/wiki/Geo-Projections
+- Time: Scales, Formatting/Parsing, ...
+- Behaviors:
+  - Zoom
+  - Drag
+- Array Utilities: `d3.sum`, `d3.max`, `d3.set`, `d3.map`
+- Selector Utilities: `.sort()`, `.filter()`, `.raise()`, `.lower()`
 
 ---
 
@@ -942,15 +1090,9 @@ SEE: [miserables.html](examples/miserables.html) ([Open in CodePen](https://code
 
 ## Basic Setup
 
-Online: https://codepen.io/sgratzl/pen/mOwrxO/
+Online: https://codepen.io/sgratzl/pen/mOwrxO
 
 Github repository: https://github.com/sgratzl/d3boilerplate
-
-## Linking of two plots example
-
-Online: https://codepen.io/sgratzl/pen/zopEgX
-
-Github repository: https://github.com/sgratzl/d3boilerplate_linking
 
 ---
 
@@ -963,19 +1105,9 @@ https://www.tableau.com/
 
 The big player for commercial fat client data visualization.
 
-![Tableau Screenshot](http://www.marketwatch.ro/mw/pics/images/image/SeniorVisualBI-Articole.png)
+![Tableau Screenshot](./i/tableau.png)
 
 (c) http://www.marketwatch.ro
-
-## HighCharts
-
-https://www.highcharts.com/
-
-Commercial JavaScript Plot library
-
-![HighCharts Screenshot](http://www.smashingapps.com/wp-content/uploads/2010/03/highcharts21.jpg)
-
-(c) https://webdesignbooth.com
 
 ## Processing
 
@@ -983,18 +1115,44 @@ https://processing.org/ and http://processingjs.org/ for a web-version
 
 Own programming language for visualizations with OpenGL backend
 
-![Processing Screenshot](https://www.noupe.com/wp-content/uploads/trans/wp-content/uploads/ext_uploads/images/infographic/infographic-119.jpg)
+![Processing Screenshot](./i/processing.jpg)
 
-## Others
+## HighCharts
 
-e.g. Plot.ly (https://plot.ly/) - chart creation
+https://www.highcharts.com/
+
+Commercial JavaScript Plot library
+
+![HighCharts Screenshot](./i/highcharts.jpg)
+
+(c) https://www.webdesignbooth.com
+
+## Chart.js
+
+https://chartjs.org
+
+Open source canvas based charting library
+
+![Chart.js Screenshot](./i/chartjs.png)
+
+## Plot.ly
+
+https://plot.ly
+
+free and commerical charting library.
+
+
+![Plot.ly Screenshot](./i/plotly.png)
+
+(c) https://aperiodical.com/
+
 
 ## Frameworks on top of D3:
 
--	NVD3 (http://nvd3.org/) - reusable plots on top of D3
--	Cubism (https://square.github.io/cubism/) - Time Series Data
--	Vega (https://vega.github.io/vega/) - declarative description of plots
--	Crossfilter (https://square.github.io/crossfilter/) - Fast Multidimensional Filtering for Coordinated Views
--	...
+- NVD3 (http://nvd3.org/) - reusable plots on top of D3
+- Cubism (https://square.github.io/cubism/) - Time Series Data
+- Vega (https://vega.github.io/vega/) - declarative description of plots
+- Crossfilter (https://square.github.io/crossfilter/) - Fast Multidimensional Filtering for Coordinated Views
+- ...
 
 Thank You

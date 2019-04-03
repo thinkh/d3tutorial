@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-  <script src="../web_modules/d3/build/d3.js"></script>
-  <style>
+  <script src="../web_modules/d3/dist/d3.js"></script>
+  <style type="text/css">
     body {
       width: 800px;
       margin: 25px auto;
@@ -27,11 +27,15 @@
 <body>
   <h1>Force Layout</h1>
 
-  <script>
-
+  <script type="text/javascript">
     // Original demo from Mike Bostock: http://bl.ocks.org/mbostock/ad70335eeef6d167bc36fd3c04378048
 
-    const margin = { top: 40, bottom: 10, left: 20, right: 20 };
+    const margin = {
+      top: 40,
+      bottom: 10,
+      left: 20,
+      right: 20
+    };
     const width = 800 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
 

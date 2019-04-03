@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-  <script src="../web_modules/d3/build/d3.js"></script>
-  <style>
+  <script src="../web_modules/d3/dist/d3.js"></script>
+  <style type="text/css">
     body {
       width: 800px;
       margin: 25px auto;
@@ -15,10 +15,9 @@
 </head>
 
 <body>
-  <h1>D3 Example</h1>
+  <h1>D3 Pie Example</h1>
 
-  <script>
-
+  <script type="text/javascript">
     const width = 800;
     const height = 600;
 
@@ -28,7 +27,7 @@
       .attr('height', height);
 
     const g = svg.append('g')
-      .attr('transform', `translate(${width / 2}, ${height / 2})`);
+      .attr('transform', `translate(${width/2}, ${height/2})`);
 
     const data = [1, 2, 0.5, 1, 1.5];
 
@@ -44,8 +43,7 @@
 
     const pied_data = pie(data);
 
-    const arcs = g.selectAll('.arc')
-      .data(pied_data);
+    const arcs = g.selectAll('.arc').data(pied_data);
 
     const arcs_enter = arcs.enter().append('path')
       .attr('class', 'arc')
@@ -55,7 +53,6 @@
       .style('fill', (d, i) => color(i));
 
     arcs.exit().remove();
-
   </script>
 </body>
 
