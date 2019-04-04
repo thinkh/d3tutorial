@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <title>Multiple Coordinated View 05</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
@@ -42,6 +43,7 @@
     h3 {
       text-align: center;
     }
+
   </style>
 </head>
 
@@ -72,17 +74,16 @@
       <svg id="age"></svg>
     </section>
     <section>
-        <h3>Fare Histogram</h3>
-        <svg id="fare"></svg>
-      </section>
-      <section>
-        <h3>Survived Distribution</h3>
-        <svg id="survived"></svg>
-      </section>
+      <h3>Fare Histogram</h3>
+      <svg id="fare"></svg>
+    </section>
+    <section>
+      <h3>Survived Distribution</h3>
+      <svg id="survived"></svg>
+    </section>
   </main>
 
   <script type="text/javascript">
-
     const state = {
       data: [],
       passengerClass: "",
@@ -90,8 +91,8 @@
       selectedSurvived: null
     };
 
-    
-    
+
+
     function createHistogram(svgSelector) {
       const margin = {
         top: 40,
@@ -122,7 +123,7 @@
       const yaxis = d3.axisLeft().scale(yscale);
       const g_yaxis = g.append('g').attr('class', 'y axis');
 
-      
+
       function update(new_data) { //: (IPerson[] & {x0: number, x1: number})[]
         //update the scales
         xscale.domain([0, d3.max(new_data, (d) => d.length)]);
@@ -177,9 +178,9 @@
 
       const pie = d3.pie().value((d) => d.values.length).sortValues(null).sort(null);
       const arc = d3.arc().outerRadius(radius).innerRadius(0);
-      
+
       const cscale = d3.scaleOrdinal(colorScheme);
-      
+
       function update(new_data) { //{key: string, values: IPerson[]}[]
         const pied = pie(new_data);
         // Render the chart with new data
@@ -270,13 +271,23 @@
         values: filtered.filter((d) => d.survived === key)
       }));
 
-      return {ageHistogramData, sexPieData, fareHistogramData, survivedPieData};
+      return {
+        ageHistogramData,
+        sexPieData,
+        fareHistogramData,
+        survivedPieData
+      };
     }
 
     function updateApp() {
       const filtered = filterData();
-            
-      const {ageHistogramData, sexPieData, fareHistogramData, survivedPieData} = wrangleData(filtered);
+
+      const {
+        ageHistogramData,
+        sexPieData,
+        fareHistogramData,
+        survivedPieData
+      } = wrangleData(filtered);
       ageHistogram(ageHistogramData);
       sexPieChart(sexPieData);
       fareHistogram(fareHistogramData);
@@ -303,6 +314,7 @@
       state.passengerClass = selected;
       updateApp();
     });
+
   </script>
 </body>
 

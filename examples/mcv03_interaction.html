@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <title>Multiple Coordinated View 03</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
@@ -42,6 +43,7 @@
     h3 {
       text-align: center;
     }
+
   </style>
 </head>
 
@@ -71,15 +73,14 @@
   </main>
 
   <script type="text/javascript">
-
     const state = {
       data: [],
       passengerClass: "",
       // TODO store selected sex
     };
 
-    
-    
+
+
     function createHistogram(svgSelector) {
       const margin = {
         top: 40,
@@ -110,7 +111,7 @@
       const yaxis = d3.axisLeft().scale(yscale);
       const g_yaxis = g.append('g').attr('class', 'y axis');
 
-      
+
       function update(new_data) { //: (IPerson[] & {x0: number, x1: number})[]
         //update the scales
         xscale.domain([0, d3.max(new_data, (d) => d.length)]);
@@ -167,7 +168,7 @@
       const arc = d3.arc().outerRadius(radius).innerRadius(0);
       const cscale = d3.scaleOrdinal(d3.schemeSet3);
 
-      
+
       function update(new_data) { //{key: string, values: IPerson[]}[]
         const pied = pie(new_data);
         // Render the chart with new data
@@ -203,7 +204,7 @@
 
     const ageHistogram = createHistogram('#age');
     const sexPieChart = createPieChart('#sex');
-    
+
     function filterData() {
       return state.data.filter((d) => {
         if (state.passengerClass && d.pclass !== state.passengerClass) {
@@ -228,13 +229,19 @@
         values: filtered.filter((d) => d.sex === key)
       }));
 
-      return {ageHistogramData, sexPieData};
+      return {
+        ageHistogramData,
+        sexPieData
+      };
     }
 
     function updateApp() {
       const filtered = filterData();
-            
-      const {ageHistogramData, sexPieData} = wrangleData(filtered);
+
+      const {
+        ageHistogramData,
+        sexPieData
+      } = wrangleData(filtered);
       ageHistogram(ageHistogramData);
       sexPieChart(sexPieData);
 
@@ -257,6 +264,7 @@
       state.passengerClass = selected;
       updateApp();
     });
+
   </script>
 </body>
 

@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <title>Multiple Coordinated View 04</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
@@ -42,6 +43,7 @@
     h3 {
       text-align: center;
     }
+
   </style>
 </head>
 
@@ -74,7 +76,6 @@
   </main>
 
   <script type="text/javascript">
-
     const state = {
       data: [],
       passengerClass: "",
@@ -82,8 +83,8 @@
       // TODO store selected survived state
     };
 
-    
-    
+
+
     function createHistogram(svgSelector) {
       const margin = {
         top: 40,
@@ -114,7 +115,7 @@
       const yaxis = d3.axisLeft().scale(yscale);
       const g_yaxis = g.append('g').attr('class', 'y axis');
 
-      
+
       function update(new_data) { //: (IPerson[] & {x0: number, x1: number})[]
         //update the scales
         xscale.domain([0, d3.max(new_data, (d) => d.length)]);
@@ -171,7 +172,7 @@
       const arc = d3.arc().outerRadius(radius).innerRadius(0);
       const cscale = d3.scaleOrdinal(d3.schemeSet3);
 
-      
+
       function update(new_data) { //{key: string, values: IPerson[]}[]
         const pied = pie(new_data);
         // Render the chart with new data
@@ -185,13 +186,13 @@
         // new elements
         const path_enter = path.enter().append('path');
         path_enter.on('click', (d) => {
-            if (state.selectedSex === d.data.key) {
-              state.selectedSex = null;
-            } else {
-              state.selectedSex = d.data.key;
-            }
-            updateApp();
-          });
+          if (state.selectedSex === d.data.key) {
+            state.selectedSex = null;
+          } else {
+            state.selectedSex = d.data.key;
+          }
+          updateApp();
+        });
         path_enter.append('title');
 
         // ENTER + UPDATE
@@ -216,7 +217,7 @@
     const ageHistogram = createHistogram('#age');
     const sexPieChart = createPieChart('#sex');
     // TODO create two new visualzations for fare and survived
-    
+
     function filterData() {
       return state.data.filter((d) => {
         if (state.passengerClass && d.pclass !== state.passengerClass) {
@@ -246,17 +247,23 @@
 
       // TODO wrangle also for fare and survived state
 
-      return {ageHistogramData, sexPieData};
+      return {
+        ageHistogramData,
+        sexPieData
+      };
     }
 
     function updateApp() {
       const filtered = filterData();
-            
-      const {ageHistogramData, sexPieData} = wrangleData(filtered);
+
+      const {
+        ageHistogramData,
+        sexPieData
+      } = wrangleData(filtered);
       ageHistogram(ageHistogramData);
       sexPieChart(sexPieData);
       // TODO update also the new charts with the wrangled data
-      
+
       d3.select('#selectedSex').text(state.selectedSex || 'None');
       // TODO also update the label for the selected survived state
     }
@@ -277,6 +284,7 @@
       state.passengerClass = selected;
       updateApp();
     });
+
   </script>
 </body>
 

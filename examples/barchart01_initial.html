@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <title>Bar Chart 01</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
@@ -24,14 +25,19 @@
     .axis {
       font-size: smaller;
     }
+
   </style>
 </head>
 
 <body>
   <h1>Student's First Bar Chart</h1>
   <script>
-
-    const margin = { top: 40, bottom: 10, left: 120, right: 20 };
+    const margin = {
+      top: 40,
+      bottom: 10,
+      left: 120,
+      right: 20
+    };
     const width = 800 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
 
@@ -49,24 +55,25 @@
 
     const bar_height = 50;
 
-  /////////////////////////
-  // TODO bind our data items to rects in our group `g`
-  // such that
-  // height = bar_height
-  // width = d*7
-  // y = i*(bar_height+5)
+    /////////////////////////
+    // TODO bind our data items to rects in our group `g`
+    // such that
+    // height = bar_height
+    // width = d*7
+    // y = i*(bar_height+5)
 
-  // Render the chart with new data
+    // Render the chart with new data
 
-  // DATA JOIN
+    // DATA JOIN
 
-  // ENTER
-  // new elements
+    // ENTER
+    // new elements
 
-  // ENTER + UPDATE
-  // both old and new elements
+    // ENTER + UPDATE
+    // both old and new elements
 
-  // EXIT
+    // EXIT
+
   </script>
 </body>
 
