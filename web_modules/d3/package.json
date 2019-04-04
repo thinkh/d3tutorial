@@ -1,27 +1,28 @@
 {
-  "_from": "d3@^5.7.0",
-  "_id": "d3@5.7.0",
+  "_from": "d3",
+  "_id": "d3@5.9.2",
   "_inBundle": false,
-  "_integrity": "sha512-8KEIfx+dFm8PlbJN9PI0suazrZ41QcaAufsKE9PRcqYPWLngHIyWJZX96n6IQKePGgeSu0l7rtlueSSNq8Zc3g==",
+  "_integrity": "sha512-ydrPot6Lm3nTWH+gJ/Cxf3FcwuvesYQ5uk+j/kXEH/xbuYWYWTMAHTJQkyeuG8Y5WM5RSEYB41EctUrXQQytRQ==",
   "_location": "/d3",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "tag",
     "registry": true,
-    "raw": "d3@^5.7.0",
+    "raw": "d3",
     "name": "d3",
     "escapedName": "d3",
-    "rawSpec": "^5.7.0",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "^5.7.0"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/d3/-/d3-5.7.0.tgz",
-  "_shasum": "f189d338bdde62acf02f308918e0ec34dd7568f9",
-  "_spec": "d3@^5.7.0",
-  "_where": "D:\\w\\d3tutorial",
+  "_resolved": "https://registry.npmjs.org/d3/-/d3-5.9.2.tgz",
+  "_shasum": "64e8a7e9c3d96d9e6e4999d2c8a2c829767e67f5",
+  "_spec": "d3",
+  "_where": "D:\\dev\\repos\\jku-icg\\Neuer Ordner",
   "author": {
     "name": "Mike Bostock",
     "url": "https://bost.ocks.org/mike"
@@ -98,5 +99,5 @@
     "test": "tape 'test/**/*-test.js'"
   },
   "unpkg": "dist/d3.min.js",
-  "version": "5.7.0"
+  "version": "5.9.2"
 }
