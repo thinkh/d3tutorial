@@ -88,7 +88,9 @@ Every major web browser (Firefox, Safari, Edge, Internet Explorer, etc.) has int
 
 While you can view local sites (`file:///`), Chrome doesn't allow you to load additional external files, e.g., JSON files, for security reasons. Therefore, you need a local webserver running for development. As alternative you can use an integrated IDE (such as [WebStorm](https://www.jetbrains.com/webstorm/)) that has a webserver already integrated.
 
-Starting a simple Python static webserver:
+We recommend to use the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for [Visual Studio Code](https://code.visualstudio.com/), which will reload the page automatically once the source code changes.
+
+Alternatively, you can start a Python static webserver:
 
 ```bash
 python -m SimpleHTTPServer
