@@ -1,80 +1,67 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title>Bar Chart 01</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
-  <style>
+  <style type="text/css">
     body {
       width: 800px;
       margin: 25px auto;
       font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     }
-
     rect {
       fill: steelblue;
       fill-opacity: 0.8;
     }
-
     rect:hover {
       fill-opacity: 1;
     }
-
     .axis {
       font-size: smaller;
     }
-
   </style>
 </head>
-
 <body>
   <h1>Student's First Bar Chart</h1>
-  <script>
-    const margin = {
-      top: 40,
-      bottom: 10,
-      left: 120,
-      right: 20
-    };
-    const width = 800 - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+  <script type="text/javascript">
 
-    // Creates sources <svg> element
-    const svg = d3.select('body').append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom);
+  const margin = {top: 40, bottom: 10, left: 120, right: 20};
+  const width = 800 - margin.left - margin.right;
+  const height = 600 - margin.top - margin.bottom;
 
-    // Group used to enforce margin
-    const g = svg.append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+  // Creates sources <svg> element
+  const svg = d3.select('body').append('svg')
+              .attr('width', width+margin.left+margin.right)
+              .attr('height', height+margin.top+margin.bottom);
 
-    // Global variable for all data
-    const data = [66.38, 21.51, 23.37, 34.17, 36.21];
+  // Group used to enforce margin
+  const g = svg.append('g')
+              .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    const bar_height = 50;
+  // Global variable for all data
+  const data = [66.38, 21.51, 23.37, 34.17, 36.21];
 
-    /////////////////////////
-    // TODO bind our data items to rects in our group `g`
-    // such that
-    // height = bar_height
-    // width = d*7
-    // y = i*(bar_height+5)
+  const bar_height = 50;
 
-    // Render the chart with new data
+  /////////////////////////
+  // TODO bind our data items to rects in our group `g`
+  // such that
+  // height = bar_height
+  // width = d*7
+  // y = i*(bar_height+5)
 
-    // DATA JOIN
+  // Render the chart with new data
 
-    // ENTER
-    // new elements
+  // DATA JOIN
 
-    // ENTER + UPDATE
-    // both old and new elements
+  // ENTER
+  // new elements
 
-    // EXIT
+  // ENTER + UPDATE
+  // both old and new elements
 
+  // EXIT
   </script>
 </body>
-
 </html>

@@ -2,7 +2,6 @@
 <html>
 
 <head>
-  <title>Multiple Coordinated View 06</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
@@ -43,7 +42,6 @@
     h3 {
       text-align: center;
     }
-
   </style>
 </head>
 
@@ -84,6 +82,7 @@
   </main>
 
   <script type="text/javascript">
+
     const state = {
       data: [],
       passengerClass: "",
@@ -91,8 +90,8 @@
       selectedSurvived: null
     };
 
-
-
+    
+    
     function createHistogram(svgSelector) {
       const margin = {
         top: 40,
@@ -123,7 +122,7 @@
       const yaxis = d3.axisLeft().scale(yscale);
       const g_yaxis = g.append('g').attr('class', 'y axis');
 
-
+      
       function update(new_data) { //: (IPerson[] & {x0: number, x1: number})[]
         //update the scales
         xscale.domain([0, d3.max(new_data, (d) => d.length)]);
@@ -136,29 +135,34 @@
         // Render the chart with new data
 
         // DATA JOIN
-        const rect = g.selectAll('rect').data(new_data);
-
-        // ENTER
-        // new elements
-        const rect_enter = rect.enter().append('rect')
-          .attr('x', 0) //set intelligent default values for animation
-          .attr('y', 0)
-          .attr('width', 0)
-          .attr('height', 0);
-        rect_enter.append('title');
+        const rect = g.selectAll('rect').data(new_data).join(
+          (enter) => {
+            // ENTER
+            // new elements
+            const rect_enter = enter.append('rect')
+              .attr('x', 0) //set intelligent default values for animation
+              .attr('y', 0)
+              .attr('width', 0)
+              .attr('height', 0);
+            rect_enter.append('title');
+            return rect_enter;
+          },          
+          // UPDATE
+          // update existing elements
+          (update) => update,
+          // EXIT
+          // elements that aren't associated with data
+          (exit) => exit.remove()
+        );      
 
         // ENTER + UPDATE
         // both old and new elements
-        rect.merge(rect_enter).transition()
+        rect.transition()
           .attr('height', (d) => yscale(d.x1) - yscale(d.x0) - 2)
           .attr('width', (d) => xscale(d.length))
           .attr('y', (d) => yscale(d.x0) + 1);
 
-        rect.merge(rect_enter).select('title').text((d) => `${d.x0}: ${d.length}`);
-
-        // EXIT
-        // elements that aren't associated with data
-        rect.exit().remove();
+        rect.select('title').text((d) => `${d.x0}: ${d.length}`);
       }
 
       return update;
@@ -179,20 +183,13 @@
 
       const pie = d3.pie().value((d) => d.values.length).sortValues(null).sort(null);
       const arc = d3.arc().outerRadius(radius).innerRadius(0);
-      const noSlice = [{
-          startAngle: 0,
-          endAngle: Math.PI * 2,
-          padAngle: 0
-        },
-        {
-          startAngle: 0,
-          endAngle: 0,
-          padAngle: 0
-        }
+      const noSlice = [
+        {startAngle: 0, endAngle: Math.PI * 2, padAngle: 0},
+        {startAngle: 0, endAngle: 0, padAngle: 0}
       ];
 
       const cscale = d3.scaleOrdinal(colorScheme);
-
+      
       function update(new_data) { //{key: string, values: IPerson[]}[]
         const pied = pie(new_data);
         // Render the chart with new data
@@ -201,46 +198,46 @@
 
         // DATA JOIN
         const old = g.selectAll('path').data();
-        const path = g.selectAll('path').data(pied, (d) => d.data.key);
-
-        // ENTER
-        // new elements
-        const path_enter = path.enter().append('path');
-        path_enter
-          .attr('d', (d, i) => arc(noSlice[i]))
-          .on('click', (d) => {
-            if (state[stateAttr] === d.data.key) {
-              state[stateAttr] = null;
-            } else {
-              state[stateAttr] = d.data.key;
-            }
-            updateApp();
-          });
-        path_enter.append('title');
 
         function tweenArc(d, i) {
           const interpolate = d3.interpolateObject(old[i], d);
           return (t) => arc(interpolate(t));
         }
 
+        // DATA JOIN
+        const path = g.selectAll('path').data(pied, (d) => d.data.key).join(
+          // ENTER
+          // new elements
+          (enter) => {
+            const path_enter = enter.append('path')
+              .attr('d', (d, i) => arc(noSlice[i]))
+              .on('click', (d) => {
+                if (state[stateAttr] === d.data.key) {
+                  state[stateAttr] = null;
+                } else {
+                  state[stateAttr] = d.data.key;
+                }
+                updateApp();
+              });
+            path_enter.append('title');
+            return path_enter;
+          },
+          (update) => update,
+          (exit) => exit.transition()
+            .attrTween('d', tweenArc)
+            .remove()
+        );
+
         // ENTER + UPDATE
         // both old and new elements
-        path.merge(path_enter)
-          .classed('selected', (d) => d.data.key === state[stateAttr])
+        path
+          .classed('selected', (d) => d.data.key === state.selectedSex)
           .transition()
           .attrTween('d', tweenArc)
           .style('fill', (d) => cscale(d.data.key));
 
-        path.merge(path_enter).select('title').text((d) => `${d.data.key}: ${d.data.values.length}`);
-
-        // EXIT
-        // elements that aren't associated with data
-        path.exit()
-          .transition()
-          .attrTween('d', tweenArc)
-          .remove();
+        path.select('title').text((d) => `${d.data.key}: ${d.data.values.length}`);
       }
-
       return update;
     }
 
@@ -292,23 +289,13 @@
         values: filtered.filter((d) => d.survived === key)
       }));
 
-      return {
-        ageHistogramData,
-        sexPieData,
-        fareHistogramData,
-        survivedPieData
-      };
+      return {ageHistogramData, sexPieData, fareHistogramData, survivedPieData};
     }
 
     function updateApp() {
       const filtered = filterData();
-
-      const {
-        ageHistogramData,
-        sexPieData,
-        fareHistogramData,
-        survivedPieData
-      } = wrangleData(filtered);
+            
+      const {ageHistogramData, sexPieData, fareHistogramData, survivedPieData} = wrangleData(filtered);
       ageHistogram(ageHistogramData);
       sexPieChart(sexPieData);
       fareHistogram(fareHistogramData);
@@ -334,7 +321,6 @@
       state.passengerClass = selected;
       updateApp();
     });
-
   </script>
 </body>
 

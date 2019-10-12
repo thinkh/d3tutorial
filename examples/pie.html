@@ -2,7 +2,6 @@
 <html>
 
 <head>
-  <title>Pie Example</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
@@ -12,7 +11,6 @@
       margin: 25px auto;
       font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     }
-
   </style>
 </head>
 
@@ -45,17 +43,14 @@
 
     const pied_data = pie(data);
 
-    const arcs = g.selectAll('.arc').data(pied_data);
+    const arcs = g.selectAll('.arc').data(pied_data).join(
+      (enter) => enter.append('path')
+        .attr('class', 'arc')
+        .style('stroke', 'white')
+    );
 
-    const arcs_enter = arcs.enter().append('path')
-      .attr('class', 'arc')
-      .style('stroke', 'white');
-
-    arcs.merge(arcs_enter).attr('d', arc)
+    arcs.attr('d', arc)
       .style('fill', (d, i) => color(i));
-
-    arcs.exit().remove();
-
   </script>
 </body>
 

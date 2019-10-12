@@ -2,7 +2,6 @@
 <html>
 
 <head>
-  <title>Multiple Coordinated View 04</title>
   <meta charset="utf-8">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
   <script src="../web_modules/d3/dist/d3.js"></script>
@@ -43,7 +42,6 @@
     h3 {
       text-align: center;
     }
-
   </style>
 </head>
 
@@ -76,6 +74,7 @@
   </main>
 
   <script type="text/javascript">
+
     const state = {
       data: [],
       passengerClass: "",
@@ -83,8 +82,8 @@
       // TODO store selected survived state
     };
 
-
-
+    
+    
     function createHistogram(svgSelector) {
       const margin = {
         top: 40,
@@ -115,7 +114,7 @@
       const yaxis = d3.axisLeft().scale(yscale);
       const g_yaxis = g.append('g').attr('class', 'y axis');
 
-
+      
       function update(new_data) { //: (IPerson[] & {x0: number, x1: number})[]
         //update the scales
         xscale.domain([0, d3.max(new_data, (d) => d.length)]);
@@ -127,29 +126,34 @@
         // Render the chart with new data
 
         // DATA JOIN
-        const rect = g.selectAll('rect').data(new_data);
-
-        // ENTER
-        // new elements
-        const rect_enter = rect.enter().append('rect')
-          .attr('x', 0) //set intelligent default values for animation
-          .attr('y', 0)
-          .attr('width', 0)
-          .attr('height', 0);
-        rect_enter.append('title');
+        const rect = g.selectAll('rect').data(new_data).join(
+          (enter) => {
+            // ENTER
+            // new elements
+            const rect_enter = enter.append('rect')
+              .attr('x', 0) //set intelligent default values for animation
+              .attr('y', 0)
+              .attr('width', 0)
+              .attr('height', 0);
+            rect_enter.append('title');
+            return rect_enter;
+          },
+          // UPDATE
+          // update existing elements
+          (update) => update,
+          // EXIT
+          // elements that aren't associated with data
+          (exit) => exit.remove()
+        );      
 
         // ENTER + UPDATE
         // both old and new elements
-        rect.merge(rect_enter).transition()
+        rect.transition()
           .attr('height', (d) => yscale(d.x1) - yscale(d.x0) - 2)
           .attr('width', (d) => xscale(d.length))
           .attr('y', (d) => yscale(d.x0) + 1);
 
-        rect.merge(rect_enter).select('title').text((d) => `${d.x0}: ${d.length}`);
-
-        // EXIT
-        // elements that aren't associated with data
-        rect.exit().remove();
+        rect.select('title').text((d) => `${d.x0}: ${d.length}`);
       }
 
       return update;
@@ -172,7 +176,7 @@
       const arc = d3.arc().outerRadius(radius).innerRadius(0);
       const cscale = d3.scaleOrdinal(d3.schemeSet3);
 
-
+      
       function update(new_data) { //{key: string, values: IPerson[]}[]
         const pied = pie(new_data);
         // Render the chart with new data
@@ -180,33 +184,33 @@
         cscale.domain(new_data.map((d) => d.key));
 
         // DATA JOIN
-        const path = g.selectAll('path').data(pied, (d) => d.data.key);
-
-        // ENTER
-        // new elements
-        const path_enter = path.enter().append('path');
-        path_enter.on('click', (d) => {
-          if (state.selectedSex === d.data.key) {
-            state.selectedSex = null;
-          } else {
-            state.selectedSex = d.data.key;
+        const path = g.selectAll('path').data(pied, (d) => d.data.key).join(
+          // ENTER
+          // new elements
+          (enter) => {
+            const path_enter = enter.append('path');
+            // TODO register click handler to change selected sex in state and call updateApp()
+            path_enter.append('title');
+            path_enter.on('click', (d) => {
+              if (state.selectedSex === d.data.key) {
+                state.selectedSex = null;
+              } else {
+                state.selectedSex = d.data.key;
+              }
+              updateApp();
+            });
+            return path_enter;
           }
-          updateApp();
-        });
-        path_enter.append('title');
+        );
 
         // ENTER + UPDATE
         // both old and new elements
-        path.merge(path_enter)
-          .classed('selected', (d) => d.data.key === state.selectedSex)
-          .attr('d', arc)
+        path
+        .classed('selected', (d) => d.data.key === state.selectedSex)
+          .attr('d', arc) // TODO set the CSS class `selected` if the current data item is the selected sex in the state
           .style('fill', (d) => cscale(d.data.key));
 
-        path.merge(path_enter).select('title').text((d) => `${d.data.key}: ${d.data.values.length}`);
-
-        // EXIT
-        // elements that aren't associated with data
-        path.exit().remove();
+        path.select('title').text((d) => `${d.data.key}: ${d.data.values.length}`);
       }
 
       return update;
@@ -217,7 +221,7 @@
     const ageHistogram = createHistogram('#age');
     const sexPieChart = createPieChart('#sex');
     // TODO create two new visualzations for fare and survived
-
+    
     function filterData() {
       return state.data.filter((d) => {
         if (state.passengerClass && d.pclass !== state.passengerClass) {
@@ -247,23 +251,17 @@
 
       // TODO wrangle also for fare and survived state
 
-      return {
-        ageHistogramData,
-        sexPieData
-      };
+      return {ageHistogramData, sexPieData};
     }
 
     function updateApp() {
       const filtered = filterData();
-
-      const {
-        ageHistogramData,
-        sexPieData
-      } = wrangleData(filtered);
+            
+      const {ageHistogramData, sexPieData} = wrangleData(filtered);
       ageHistogram(ageHistogramData);
       sexPieChart(sexPieData);
       // TODO update also the new charts with the wrangled data
-
+      
       d3.select('#selectedSex').text(state.selectedSex || 'None');
       // TODO also update the label for the selected survived state
     }
@@ -284,7 +282,6 @@
       state.passengerClass = selected;
       updateApp();
     });
-
   </script>
 </body>
 
